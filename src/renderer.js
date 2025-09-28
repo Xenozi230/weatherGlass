@@ -31,7 +31,7 @@ function addHistory(city) {
 }
 function renderHistory() {
     historyList.innerHTML = history
-        .map(city => `<li onclick="showWeather('${city}')">${city}</li>`)
+        .map(city => `<li onclick="fetchWeather('${city}')">${city}</li>`)
         .join('');
 }
 
@@ -43,7 +43,7 @@ function addFavorite(city) {
 }
 function renderFavorites() {
     favoritesList.innerHTML = favorites
-        .map(city => `<li onclick="showWeather('${city}')">${city}</li>`)
+        .map(city => `<li onclick="fetchWeather('${city}')">${city}</li>`)
         .join('');
 }
 
@@ -72,6 +72,7 @@ async function fetchWeather(city) {
                 <div class="condition">${condition}</div>
                 <div class="wind">Wind: ${windspeed} km/h</div>
                 <button onclick="addFavorite('${city}')">⭐ Add to favorites</button>
+                <button> ➕ Add on Desktop</button>
             </div>
         `;
         addHistory(city);
