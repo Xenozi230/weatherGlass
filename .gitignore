@@ -1,5 +1,7 @@
-.node_modules/
+# Ignore build output and dependencies
 dist/
+
+node_modules/
 
 npm-debug.log*
 .DS_Store
