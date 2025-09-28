@@ -19,6 +19,7 @@ const weatherConditions = {
     71: "❄️ Light snow",
     95: "⛈️ Thunderstorm",
 }
+
 //------------------------------------------
 // Add city to history and favorites
 //------------------------------------------
@@ -48,6 +49,13 @@ function renderFavorites() {
 }
 
 //------------------------------------------
+// Open a widget window for the city
+//------------------------------------------
+function openWidget(cityData) {
+    window.electronAPI.openWidget(cityData);
+}
+
+//------------------------------------------
 // Fetch weather data (open-Meteo API)
 //------------------------------------------
 async function fetchWeather(city) {
@@ -72,10 +80,12 @@ async function fetchWeather(city) {
                 <div class="condition">${condition}</div>
                 <div class="wind">Wind: ${windspeed} km/h</div>
                 <button onclick="addFavorite('${city}')">⭐ Add to favorites</button>
-                <button> ➕ Add on Desktop</button>
+                <button onclick="openWidget({name: '${name}', country: '${country}', temperature: ${temperature}, condition: '${condition}', windspeed: ${windspeed}})">🪟 Open Widget</button>
             </div>
         `;
         addHistory(city);
+
+        
 
     } catch (error) {
         console.error("Error fetching weather data:", error);
@@ -90,5 +100,6 @@ searchBtn.addEventListener('click', () => {
     if (city) fetchWeather(city);
 });
 
+window.openWidget = openWidget;
 window.fetchWeather = fetchWeather;
 window.addFavorite = addFavorite;
