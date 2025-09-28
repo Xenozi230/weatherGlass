@@ -1,21 +1,27 @@
 const cityInput = document.getElementById('cityInput');
 const searchBtn = document.getElementById('searchBtn');
-const weatherResult = document.getElementById('weatherResult');
+const weatherResult = document.getElementById('wheatherResult');
 const historyList = document.getElementById('historyList');
 const favoritesList = document.getElementById('favoritesList');
 
 let history = [];
 let favorites = [];
 
-
-function fakeWeatherAPI(city) {
-    const temp = Math.floor(Math.random() * 30);
-    const conditions = ['Sunny', 'Cloudy', 'Rainy', 'Windy', 'Snowy'];
-    const condition = conditions[Math.floor(Math.random() * conditions.length)];
-    return `${city}: ${temp}°C, ${condition}`;
+const weatherConditions = {
+    0: "☀️ Clear",
+    1: "🌤️ Mainly clear",
+    2: "⛅ Partly cloudy",
+    3: "☁️ Overcast",
+    45: "🌫️ Fog",
+    48: "🌫️ Depositing rime fog",
+    51: "🌦️ Light drizzle",
+    61: "🌧️ Light rain",
+    71: "❄️ Light snow",
+    95: "⛈️ Thunderstorm",
 }
-
-
+//------------------------------------------
+// Add city to history and favorites
+//------------------------------------------
 function addHistory(city) {
     if (!history.includes(city)) {
         history.unshift(city);
@@ -41,27 +47,47 @@ function renderFavorites() {
         .join('');
 }
 
+//------------------------------------------
+// Fetch weather data (open-Meteo API)
+//------------------------------------------
+async function fetchWeather(city) {
+    try {
+        const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1&language=en&format=json`);
+        const geoData = await geoRes.json();
+        if (!geoData.results || geoData.results.length === 0) {
+            weatherResult.innerHTML = `<p>City not found</p>`;
+            return ;
+        }
+        const { latitude, longitude, name, country } = geoData.results[0];
 
-function showWeather(city) {
-    const info = fakeWeatherAPI(city);
-    const [cityName, details] = info.split(': ');
-    const [temp, condition] = details.split(', ');
-    wheatherResult.innerHTML = `
-        <div class="weather-card glass">
-            <h2 class="city-name">${cityName}</h2>
-            <div class="temp">${temp}</div>
-            <div class="condition">${condition}</div>
-            <button onclick="addFavorite('${cityName}')">⭐ Add to favorites</button>
-        </div>
-    `;
-    addHistory(city);
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+        const weatherData = await weatherRes.json();
+        const { temperature, weathercode, windspeed } = weatherData.current_weather;
+
+        const condition = weatherConditions[weathercode] || "Unknown";
+        weatherResult.innerHTML = `
+            <div class="weather-card">
+                <div class="city-name">${name}, ${country}</div>
+                <div class="temp">${temperature}°C</div>
+                <div class="condition">${condition}</div>
+                <div class="wind">Wind: ${windspeed} km/h</div>
+                <button onclick="addFavorite('${city}')">⭐ Add to favorites</button>
+            </div>
+        `;
+        addHistory(city);
+
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        weatherResult.innerHTML = `<p>Error fetching weather data</p>`;
+    }
+    
 }
 
 searchBtn.addEventListener('click', () => {
     const city = cityInput.value.trim();
     console.log("Search clicked with:", city);
-    if (city) showWeather(city);
+    if (city) fetchWeather(city);
 });
 
-window.showWeather = showWeather;
+window.fetchWeather = fetchWeather;
 window.addFavorite = addFavorite;
