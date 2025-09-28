@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Glass App</title>
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    
+    <div class="glass app-container">
+        <h1> Weather </h1>
+        <input id="cityInput" type="text" placeholder="Enter a city ..."/>
+        <button id="searchBtn">Search</button>
+        <div id="wheatherResult"></div>
+
+        <h2>Favorites</h2>
+        <ul id="favoritesList"></ul>
+
+        <h2>History</h2>
+        <ul id="historyList"></ul>
+    </div>
+    <script src="renderer.js"></script>
+    
+</body>
+</html>
