@@ -8,22 +8,23 @@ body {
   font-family: 'Segoe UI', sans-serif;
   color: white;
   overflow: auto;
+  -webkit-app-region: drag;
 }
 
 .app-container {
   position: relative;
   width: 400px;
-  max-height: 100vh;       /* Limite la hauteur pour scroll si nécessaire */
+  max-height: 100vh;      
   padding: 30px;
   border-radius: 25px;
-  background: rgba(255, 255, 255, 0.12); /* Transparence style widget */
+  background: rgba(255, 255, 255, 0.12); 
   backdrop-filter: blur(25px) saturate(150%);
   -webkit-backdrop-filter: blur(25px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   text-align: center;
   -webkit-app-region: drag;
-  overflow-y: auto;       /* Scroll vertical si contenu dépasse */
+  overflow-y: auto;       
 }
 
 .app-container::-webkit-scrollbar {
