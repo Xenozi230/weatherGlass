@@ -48,7 +48,7 @@ async function addFavorite(city) {
         favorites.push(city);
     }
     renderFavorites();
-    await window.electronAPI.setFavorite(favorites);
+    await window.electronAPI.setFavorites(favorites);
 }
 function renderFavorites() {
     favoritesList.innerHTML = favorites
