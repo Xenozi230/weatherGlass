@@ -48,7 +48,7 @@ function saveFavorites() {
 //--------------------------------------------------
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,     
+        width: 600,     
         height: 1000,    
         transparent: true,
         frame: false,     

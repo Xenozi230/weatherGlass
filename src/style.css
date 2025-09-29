@@ -8,19 +8,19 @@ body {
   font-family: 'Segoe UI', sans-serif;
   color: white;
   overflow: auto;
-  -webkit-app-region: drag;
 }
 
 .app-container {
   position: relative;
+  display: fix;
   width: 400px;
-  max-height: 100vh;      
+  max-height: 80vh;      
   padding: 30px;
   border-radius: 25px;
   background: rgba(255, 255, 255, 0.12); 
   backdrop-filter: blur(25px) saturate(150%);
   -webkit-backdrop-filter: blur(25px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   text-align: center;
   -webkit-app-region: drag;
@@ -130,7 +130,7 @@ li:hover {
 }
 
 .weather-card .city-name {
-  font-size: 18px;
+  font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
 }
