@@ -23,24 +23,35 @@ function createWindow() {
 //--------------------------------------------------
 // Create a widget window for displaying weather information
 //--------------------------------------------------
+let widget = null;
 function createWidget(weatherData) {
-    const widget = new BrowserWindow({
-        width: 300,
-        height: 200,
-        frame: false,
-        transparent: true,
-        alwaysOnTop: true,
-        resizable: false,
-        webPreferences: {
-            preload: path.join(__dirname, 'preload.js'),  
-            nodeIntegration: false,     
-            contextIsolation: true 
-        }
-    });
-    widget.loadFile('src/widget.html');
-    widget.webContents.on('did-finish-load', () => {
+    if (widget) {
         widget.webContents.send('set-weather', weatherData);
-    });
+        widget.focus();
+    } else {
+        widget = new BrowserWindow({
+            width: 300,
+            height: 200,
+            frame: false,
+            transparent: true,
+            resizable: false,
+            movable: true,
+            webPreferences: {
+                preload: path.join(__dirname, 'preload.js'),  
+                nodeIntegration: false,     
+                contextIsolation: true 
+            }
+        });
+        widget.loadFile('src/widget.html');
+        widget.setAlwaysOnTop(false, 'desktop');
+        widget.setFocusable(false);
+        widget.webContents.on('did-finish-load', () => {
+            widget.webContents.send('set-weather', weatherData);
+        });
+        widget.on('closed', () => {
+            widget = null;
+        });
+    }
 }
 ipcMain.on('open-widget', (event, weatherData) => {
     createWidget(weatherData);
@@ -49,7 +60,6 @@ ipcMain.on('open-widget', (event, weatherData) => {
 
 app.whenReady().then(() => {
     createWindow()
-
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
