@@ -3,16 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Weather Widget</title>
     <link rel="stylesheet" href="widgetStyle.css">
 </head>
 <body>
-    <div class="widget-card">
-        <div class="city-name" id="cityName">City</div>
-        <div class="temp" id="temperature"></div>
-        <div class="condition" id="condition">Loading...</div>
-        <div class="wind" id="wind"></div>
+    <div class="container container--inline">
+        <div class="glass-container glass-container--large">
+            <div class="glass-filter"></div>
+            <div class="glass-overlay"></div>
+            <div class="glass-specular"></div>
+
+            <svg style="display:none">
+                <filter id="lg-dist">
+                    <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" seed="92" result="noise"/>
+                    <feGaussianBlur in="noise" stdDeviation="2" result="blurred"/>
+                    <feDisplacementMap in="SourceGraphic" in2="blurred" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+                </filter>
+            </svg>
+            <div class="glass-content glass-content--inline">
+                <div class="widget-card">
+                    <div class="city-name" id="cityName">City</div>
+                    <div class="temp" id="temperature">--°C</div>
+                    <div class="condition" id="condition">Loading...</div>
+                    <div class="wind" id="wind">-- km/h</div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <script src="widget.js"></script>
 </body>
 </html>

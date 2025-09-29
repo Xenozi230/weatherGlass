@@ -50,8 +50,8 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 800,     
         height: 1000,    
-        transparent: false,     
-        frame: true,     
+        transparent: true,
+        frame: false,     
         icon: path.join(__dirname, 'weatherAppIcon.png'),  
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),  

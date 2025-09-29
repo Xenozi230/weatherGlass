@@ -15,5 +15,4 @@ contextBridge.exposeInMainWorld("electronAPI", {
     onSetWeather: (callback) => ipcRenderer.on('set-weather', callback),    
     getFavorites: () => ipcRenderer.invoke('get-favorites'),
     setFavorites: (favorites) => ipcRenderer.invoke('set-favorites', favorites)
-
 });

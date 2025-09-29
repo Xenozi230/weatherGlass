@@ -6,22 +6,33 @@
     <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    
     <div class="glass app-container">
-        <h1> Weather </h1>
-        <input id="cityInput" type="text" placeholder="Enter a city ..."/>
-        <button id="searchBtn">Search</button>
-        <div id="wheatherResult"></div>
+        <!-- Effets de verre -->
+        <div class="glass-filter"></div>
+        <div class="glass-overlay"></div>
+        <div class="glass-specular"></div>
 
-        <h2>Favorites</h2>
-        <ul id="favoritesList"></ul>
-
-        <h2>History</h2>
-        <ul id="historyList"></ul>
+        <div class="glass-content">
+            <h1>Weather</h1>
+            <input id="cityInput" type="text" placeholder="Enter a city ..."/>
+            <button id="searchBtn">Search</button>
+            <div id="wheatherResult"></div>
+            <h2>Favorites</h2>
+            <ul id="favoritesList"></ul>
+            <h2>History</h2>
+            <ul id="historyList"></ul>
+        </div>
     </div>
+
+    <svg style="display:none">
+        <filter id="lg-dist">
+            <feTurbulence type="fractalNoise" baseFrequency="0.008 0.008" numOctaves="2" result="noise"/>
+            <feGaussianBlur in="noise" stdDeviation="2" result="blurred"/>
+            <feDisplacementMap in="SourceGraphic" in2="blurred" scale="20" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
+
     <script src="renderer.js"></script>
-    
 </body>
 </html>

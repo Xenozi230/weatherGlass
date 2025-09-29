@@ -1,37 +1,56 @@
-
 body {
   margin: 0;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #211f27, #8da8ab); 
+  background: transparent;
   font-family: 'Segoe UI', sans-serif;
   color: white;
-  overflow: hidden;
+  overflow: auto;
 }
 
-
-.glass {
-  background: rgba(255, 255, 255, 0.08);   
-  border-radius: 25px;                     
-  backdrop-filter: blur(25px) saturate(150%); 
-  -webkit-backdrop-filter: blur(25px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.2); 
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);  
+.app-container {
+  position: relative;
+  width: 400px;
+  max-height: 100vh;       /* Limite la hauteur pour scroll si nécessaire */
   padding: 30px;
-  width: 350px;
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.12); /* Transparence style widget */
+  backdrop-filter: blur(25px) saturate(150%);
+  -webkit-backdrop-filter: blur(25px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   text-align: center;
-  animation: fadeIn 1s ease; 
+  -webkit-app-region: drag;
+  overflow-y: auto;       /* Scroll vertical si contenu dépasse */
 }
 
+.app-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.app-container::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.app-container::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 10px;
+}
+
+.app-container .glass-content {
+  position: relative;
+  z-index: 3;
+  -webkit-app-region: no-drag;
+}
 
 h1 {
   margin-bottom: 20px;
   font-weight: 500;
   text-shadow: 0 0 10px rgba(255,255,255,0.3);
 }
-
 
 input, button {
   margin: 10px 0;
@@ -67,65 +86,56 @@ button:hover {
   transform: scale(1.05); 
 }
 
-
-#weatherResult {
-  margin-top: 20px;
-  padding: 15px;
+#weatherResult, ul, li {
+  margin-top: 15px;
   border-radius: 15px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
   backdrop-filter: blur(15px);
-  font-size: 18px;
   box-shadow: inset 0 0 10px rgba(255,255,255,0.1); 
-}
-
-ul {
+  padding: 10px;
   list-style: none;
-  padding: 0;
-  margin-top: 10px;
-}
-
-li {
-  background: rgba(255,255,255,0.1);
-  margin: 5px 0;
-  padding: 8px;
-  border-radius: 10px;
-  transition: 0.3s;
-  backdrop-filter: blur(10px);
-  cursor: pointer;
+  color: #fff;
 }
 
 li:hover {
-  background: rgba(0, 255, 255, 0.2); 
+  background: rgba(0, 255, 255, 0.15); 
   color: #00ffff;
   transform: translateX(5px); 
 }
 
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-
 .weather-card {
+  position: relative;
   margin-top: 20px;
-  padding: 0px;
+  padding: 20px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
   color: #fff;
   animation: fadeIn 0.3s ease-in-out;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.25);
 }
+
+.weather-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0) 60%);
+  pointer-events: none; 
+}
+
 .weather-card .city-name {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
+
 .weather-card .temp {
-  font-size: 48px;
+  font-size: 36px;
   font-weight: bold;
   margin: 10px 0;
 }
@@ -147,4 +157,31 @@ li:hover {
 
 .weather-card button:hover {
   background: rgba(255, 255, 255, 0.4);
+}
+
+/* Effet liquide */
+.glass-filter {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  backdrop-filter: blur(0px);
+  filter: url(#lg-dist);
+  isolation: isolate;
+}
+
+.glass-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: rgba(255,255,255,0.12); 
+}
+
+.glass-specular {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  overflow: hidden;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.5),
+              inset 0 0 5px rgba(255,255,255,0.5);
 }
