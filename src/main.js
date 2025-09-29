@@ -1,6 +1,10 @@
 console.log("Main start");
-const { app, BrowserWindow, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, Tray } = require('electron');
 const path = require('path')
+
+let mainWindow = null;
+let widget = null;
+let tray = null;
 
 //--------------------------------------------------
 // Create the main application window
@@ -23,7 +27,6 @@ function createWindow() {
 //--------------------------------------------------
 // Create a widget window for displaying weather information
 //--------------------------------------------------
-let widget = null;
 function createWidget(weatherData) {
     if (widget) {
         widget.webContents.send('set-weather', weatherData);
@@ -53,6 +56,41 @@ function createWidget(weatherData) {
         });
     }
 }
+
+function createTray() {
+    tray = new Tray(path.join(__dirname, 'weatherAppIcon.png'));
+    tray.setToolTip('Weather Glass App');
+
+    const contextMenu = Menu.buildFromTemplate([
+        {
+            label: 'Open l\'app',
+            click: () => {
+                if (mainWindow) {
+                    mainWindow.show();
+                    mainWindow.focus();
+                } else {
+                    createWindow();
+                }
+            }
+        },
+        {
+            label: 'Close Widget',
+            click: () => {
+                if (widget) {
+                    widget.hide();
+                }
+            }
+        },
+        {type: 'separator'},
+        {label: 'Quit weather glass',click: () => app.quit()}
+    ]);
+    tray.setContextMenu(contextMenu);
+}
+
+
+//--------------------------------------------------
+// IPC
+//--------------------------------------------------
 ipcMain.on('open-widget', (event, weatherData) => {
     createWidget(weatherData);
 });
@@ -60,6 +98,7 @@ ipcMain.on('open-widget', (event, weatherData) => {
 
 app.whenReady().then(() => {
     createWindow()
+    createTray()
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) {
             createWindow()
