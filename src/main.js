@@ -1,10 +1,47 @@
 console.log("Main start");
 const { app, BrowserWindow, ipcMain, Menu, Tray } = require('electron');
-const path = require('path')
+const path = require('path');
+const fs = require('fs');
 
 let mainWindow = null;
 let widget = null;
 let tray = null;
+
+const favoriteFilePath = path.join(app.getPath('userData'), 'favorites.json');
+let favorites = [];
+
+function ensureDataPath() {
+    const dir = path.dirname(favoriteFilePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+    }
+}
+
+function loadFavorites() {
+    ensureDataPath();
+    try {
+        if (fs.existsSync(favoriteFilePath)) {
+            const data = fs.readFileSync(favoriteFilePath, 'utf8');
+            favorites = JSON.parse(data);
+        } else {
+            favorites = [];
+            saveFavorites(); // créer le fichier vide seulement si il n'existe pas
+        }
+    } catch (error) {
+        console.error("Error loading favorites:", error);
+        favorites = [];
+    }
+
+}
+
+function saveFavorites() {
+    ensureDataPath();
+    try {
+        fs.writeFileSync(favoriteFilePath, JSON.stringify(favorites, null, 2));
+    } catch (error) {
+        console.error("Error saving favorites:", error);
+    }
+}
 
 //--------------------------------------------------
 // Create the main application window
@@ -14,7 +51,8 @@ function createWindow() {
         width: 800,     
         height: 1000,    
         transparent: false,     
-        frame: true,       
+        frame: true,     
+        icon: path.join(__dirname, 'weatherAppIcon.png'),  
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),  
             nodeIntegration: false,     
@@ -57,13 +95,16 @@ function createWidget(weatherData) {
     }
 }
 
+//--------------------------------------------------
+// Create Tray
+//--------------------------------------------------
 function createTray() {
     tray = new Tray(path.join(__dirname, 'weatherAppIcon.png'));
-    tray.setToolTip('Weather Glass App');
+    tray.setToolTip('Weather Glass ');
 
     const contextMenu = Menu.buildFromTemplate([
         {
-            label: 'Open l\'app',
+            label: 'Open weather glass',
             click: () => {
                 if (mainWindow) {
                     mainWindow.show();
@@ -77,7 +118,8 @@ function createTray() {
             label: 'Close Widget',
             click: () => {
                 if (widget) {
-                    widget.hide();
+                    widget.close();
+                    widget = null;
                 }
             }
         },
@@ -95,8 +137,17 @@ ipcMain.on('open-widget', (event, weatherData) => {
     createWidget(weatherData);
 });
 
+ipcMain.handle('get-favorites', async () => {
+    return favorites;
+});
+ipcMain.handle('set-favorites', async (event, favs) => {
+    favorites = favs;
+    saveFavorites();
+    return favorites;
+});
 
 app.whenReady().then(() => {
+    loadFavorites();
     createWindow()
     createTray()
     app.on('activate', () => {

@@ -23,31 +23,39 @@ const weatherConditions = {
 //------------------------------------------
 // Add city to history and favorites
 //------------------------------------------
-function addHistory(city) {
-    if (!history.includes(city)) {
-        history.unshift(city);
+function addHistory(name) {
+    if (!history.includes(name)) {
+        history.unshift(name);
         if (history.length > 5) history.pop();
         renderHistory();
     }
 }
 function renderHistory() {
     historyList.innerHTML = history
-        .map(city => `<li onclick="fetchWeather('${city}')">${city}</li>`)
+        .map(name => `<li onclick="fetchWeather('${name}')">${name}</li>`)
         .join('');
 }
 
-function addFavorite(city) {
-    if (!favorites.includes(city)) {
+async function loadFavorites() {
+    const favs = await window.electronAPI.getFavorites();
+    favorites = favs;
+    renderFavorites(favs);
+}
+async function addFavorite(city) {
+    if (favorites.includes(city)) {
+        favorites= favorites.filter(fav => fav !== city);
+    } else {
         favorites.push(city);
-        renderFavorites();
     }
+    renderFavorites();
+    await window.electronAPI.setFavorite(favorites);
 }
 function renderFavorites() {
     favoritesList.innerHTML = favorites
         .map(city => `<li onclick="fetchWeather('${city}')">${city}</li>`)
         .join('');
 }
-
+document.addEventListener('DOMContentLoaded', loadFavorites);
 //------------------------------------------
 // Open a widget window for the city
 //------------------------------------------
@@ -79,11 +87,11 @@ async function fetchWeather(city) {
                 <div class="temp">${temperature}°C</div>
                 <div class="condition">${condition}</div>
                 <div class="wind">Wind: ${windspeed} km/h</div>
-                <button onclick="addFavorite('${city}')">⭐ Add to favorites</button>
+                <button onclick="addFavorite('${name}')">⭐ Add/Remove to favorites</button>
                 <button onclick="openWidget({name: '${name}', country: '${country}', temperature: ${temperature}, condition: '${condition}', windspeed: ${windspeed}})">➕ Open Widget</button>
             </div>
         `;
-        addHistory(city);
+        addHistory(name);
 
         
 

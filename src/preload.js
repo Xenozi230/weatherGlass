@@ -12,6 +12,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
 contextBridge.exposeInMainWorld("electronAPI", {
     openWidget: (weatherData) => ipcRenderer.send('open-widget', weatherData),
-    onSetWeather: (callback) => ipcRenderer.on('set-weather', callback)
+    onSetWeather: (callback) => ipcRenderer.on('set-weather', callback),    
+    getFavorites: () => ipcRenderer.invoke('get-favorites'),
+    setFavorites: (favorites) => ipcRenderer.invoke('set-favorites', favorites)
 
 });
