@@ -88,7 +88,7 @@ async function fetchWeather(city) {
                 <div class="condition">${condition}</div>
                 <div class="wind">Wind: ${windspeed} km/h</div>
                 <button onclick="addFavorite('${name}')">⭐ Add/Remove to favorites</button>
-                <button onclick="openWidget({name: '${name}', country: '${country}', temperature: ${temperature}, condition: '${condition}', windspeed: ${windspeed}})">➕ Open Widget</button>
+                <button onclick="openWidget({name: '${name}', country: '${country}', temperature: ${temperature}, condition: '${condition}', windspeed: ${windspeed}})">➕ Open/Update Widget</button>
             </div>
         `;
         addHistory(name);

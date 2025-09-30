@@ -6,7 +6,7 @@ body {
   justify-content: center;
   background: transparent;
   font-family: 'Segoe UI', sans-serif;
-  color: white;
+  color: #e6f0ff; /* Texte plus clair et lisible */
   overflow: auto;
 }
 
@@ -17,9 +17,9 @@ body {
   max-height: 80vh;      
   padding: 30px;
   border-radius: 25px;
-  background: rgba(255, 255, 255, 0.12); 
-  backdrop-filter: blur(25px) saturate(150%);
-  -webkit-backdrop-filter: blur(25px) saturate(150%);
+  background: rgba(255, 255, 255, 0.10); 
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   text-align: center;
@@ -37,7 +37,7 @@ body {
 }
 
 .app-container::-webkit-scrollbar-thumb {
-  background: transparent;
+  background: rgba(200, 200, 255, 0.3);
   border-radius: 10px;
 }
 
@@ -50,7 +50,8 @@ body {
 h1 {
   margin-bottom: 20px;
   font-weight: 500;
-  text-shadow: 0 0 10px rgba(255,255,255,0.3);
+  text-shadow: 0 0 12px rgba(0,255,255,0.6);
+  color: #ffffff;
 }
 
 input, button {
@@ -65,43 +66,49 @@ input, button {
 }
 
 input {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(255, 255, 255, 0.25);
+  color: #0a0a0a; /* texte foncé lisible */
   backdrop-filter: blur(5px);
 }
 
 input::placeholder {
-  color: rgba(255,255,255,0.6);
+  color: rgba(0, 0, 0, 0.65);
 }
 
 button {
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
+  background: rgba(0, 255, 255, 0.25);
+  color: #ffffff; /* meilleur contraste */
   cursor: pointer;
   backdrop-filter: blur(5px);
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  font-weight: bold;
 }
 
 button:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(0,255,255,0.35);
   transform: scale(1.05); 
 }
 
 #weatherResult, ul, li {
   margin-top: 15px;
   border-radius: 15px;
-  background: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.15);
   backdrop-filter: blur(15px);
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.1); 
+  box-shadow: inset 0 0 10px rgba(255,255,255,0.15),
+              0 0 10px rgba(0,0,0,0.6); 
   padding: 10px;
   list-style: none;
-  color: #fff;
+  color: #ffffff; /* texte en blanc pur pour meilleur contraste */
+  font-weight: 500;
+  text-shadow: 0 0 6px rgba(0,0,0,0.8); /* ombre pour détacher le texte */
 }
 
 li:hover {
-  background: rgba(0, 255, 255, 0.15); 
-  color: #00ffff;
-  transform: translateX(5px); 
+  background: rgba(0, 255, 255, 0.3); 
+  color: #00ffff; /* effet néon cyan */
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(0,255,255,0.9), 0 0 18px rgba(0,255,255,0.7);
+  transform: translateX(5px) scale(1.02); 
 }
 
 .weather-card {
@@ -114,7 +121,7 @@ li:hover {
   -webkit-backdrop-filter: blur(20px) saturate(150%);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   text-align: center;
-  color: #fff;
+  color: #f5faff; /* meilleur contraste */
   animation: fadeIn 0.3s ease-in-out;
   transition: all 0.3s ease;
   border: 1px solid rgba(255,255,255,0.25);
@@ -133,34 +140,38 @@ li:hover {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 10px;
+  color: #ffffff;
+  text-shadow: 0 0 8px rgba(0,255,255,0.6);
 }
 
 .weather-card .temp {
   font-size: 36px;
   font-weight: bold;
   margin: 10px 0;
+  color: #00e6ff;
+  text-shadow: 0 0 10px rgba(0,255,255,0.6);
 }
 
 .weather-card .condition {
   font-size: 20px;
   margin-bottom: 15px;
+  color: #d0f0ff;
 }
 
 .weather-card button {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 255, 255, 0.25);
   border: none;
   padding: 10px 20px;
   border-radius: 12px;
-  color: white;
+  color: #ffffff;
   cursor: pointer;
   transition: 0.2s;
 }
 
 .weather-card button:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 255, 255, 0.4);
 }
 
-/* Effet liquide */
 .glass-filter {
   position: absolute;
   inset: 0;
